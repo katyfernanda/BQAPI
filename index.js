@@ -1,10 +1,12 @@
 const express = require('express')
 const app = express()
 const jwt = require('jsonwebtoken')
+const cors = require('cors')
 
 const SECRET = "FDXpEaMfmnr1cS1aqhWE"
 
 app.use(express.json())
+app.use(cors())
 
 app.get('/', (req, res) => {
 	res.json({msg: 'Hola'})
