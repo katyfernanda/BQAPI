@@ -6,13 +6,27 @@ const cors = require('cors')
 const SECRET = "FDXpEaMfmnr1cS1aqhWE"
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin:'*'
+}))
+
+// const whiteList = ['http://localhost:3000/' ]// http que voy a permitir que use ela api
+// const corsOptions = {
+//     origin: function (origin, callback) {
+//         console.log(origin)
+//         if(whiteList.indexOf(origin) !== -1){
+//             callback(null,true);
+//         }else{
+//             callback(new Error('No hay cors'))
+//         }
+//     }
+// }
 
 app.get('/', (req, res) => {
 	res.json({msg: 'Hola'})
 })
 
-app.post('/auth', (req, res)=> {
+app.post('/auth',(req, res)=> {
 	const user = req.body.user
 	const pass = req.body.password
 
