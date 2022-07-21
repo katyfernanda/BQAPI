@@ -2,64 +2,53 @@ const express = require('express')
 const app = express()
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
+const mongoose = require('mongoose')
 
-const SECRET = "FDXpEaMfmnr1cS1aqhWE"
+require('dotenv').config()
+const { registerUser } = require('./controllers/users.js')
+const { login } = require('./controllers/login.js')
+
+const URL = process.env.NODE_ENV === 'development' ? process.env.DB_DEV : process.env.DB_PROD
+mongoose
+    .connect(URL)
+    .then(() => {
+        const message = process.env.NODE_ENV === 'development' ? 'Conectado a DB_DEV' : 'Conectado a DB_PROD'
+        console.log(message)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
 
 app.use(express.json())
 app.use(cors({
-    origin:'*',
+    origin: '*',
     credentials: true
 }))
 
 app.get('/', (req, res) => {
-	res.json({msg: 'Hola'})
+    res.json({ msg: 'Hola' })
+})
+app.post('/register', (req, res) => {
+    registerUser(req, res)
 })
 
-app.post('/auth',(req, res)=> {
-	const user = req.body.user
-	const pass = req.body.password
-
-	if(!user) {
-		return res.status(400).json({
-			success: false,
-			msg: 'Usuario requerido'
-		})
-	}
-
-	if(!pass) {
-		return res.status(400).json({
-			success: false,
-			msg: 'Contraseña requerida'
-		})
-	}
-	if(user === 'admin' && pass === '123456') {
-		const token = jwt.sign({ user }, SECRET )		
-		return res.status(200).json({
-			success: true,
-			token
-		})
-	} else {
-		return res.status(400).json({
-			success: false,
-			msg: 'Usuario o contraseña incorrecto'
-		})
-	}
+app.post('/auth',(req, res) => {
+    login(req, res)
 })
 
 
-app.get('/orders', (req, res)=> {
-	const token = req.headers.authorization
-
-	try {
-	  const decoded = jwt.verify(token, SECRET);
-		return res.json({
-			decoded
-		})
-	} catch(err) {
-	  return res.json({
-			err
-		})
-	}
+app.get('/orders', (req, res) => {
+    const token = req.headers.authorization
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET);
+        console.log(decoded)
+        return res.json({
+            decoded
+        })
+    } catch (err) {
+        return console.log(err)
+    }
 })
 
 
