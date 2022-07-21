@@ -32,11 +32,8 @@ app.post('/auth',(req, res)=> {
 			msg: 'Contraseña requerida'
 		})
 	}
-
-	
 	if(user === 'admin' && pass === '123456') {
-		const token = jwt.sign({ user }, SECRET )
-		
+		const token = jwt.sign({ user }, SECRET )		
 		return res.status(200).json({
 			success: true,
 			token
