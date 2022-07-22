@@ -8,7 +8,6 @@ const SECRET = process.env.SECRET
 const login = (req, res) => {
     const email = req.body.email
     const password = req.body.password
-
     !email ? res.json(400)({success: false, message:'Email requerido'})
     :
     !password ? res.json(400)({success: false, message:'Password requerido'})
@@ -30,7 +29,7 @@ const login = (req, res) => {
                 commerce: response.commerce
             }})
         }else{
-            res.status(401).json({success: false, message:'No autorizado'}) //deberi1a ser un mensaje más explicito??indicar clave??
+            res.status(401).json({success: false, message:'Contraseña incorrecta'})
         }
     })
     .catch((err) => {
