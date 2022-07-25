@@ -5,10 +5,10 @@ Tecnologías utilizadas: Express, Javascript, JWT, Bcryptjs, Cors, MongoDB.
 ## Requisitos para conexión a la API
 
 Será necesario que nos mandes los siguientes datos para crear tu usuario:  
--email: String  
--password: String  
--role: String //ej: admin, garzón, cocinero, etc.  
--commerce: String //corresponde al nombre de tu app  
+- email: String  
+- password: String  
+- role: String //ej: admin, garzón, cocinero, etc.  
+- commerce: String //corresponde al nombre de tu app  
 
 **Instalación de Axios**
 
