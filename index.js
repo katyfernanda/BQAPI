@@ -4,10 +4,11 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const { expressjwt } = require("express-jwt");
+const routes = require('./routes/index')
+
 
 require('dotenv').config()
-const { registerUser } = require('./controllers/users.js')
-const { login } = require('./controllers/login.js')
+
 
 const URL = process.env.NODE_ENV === 'development' ? process.env.DB_DEV : process.env.DB_PROD
 mongoose
@@ -29,20 +30,16 @@ app.use(cors({
 app.use(
     expressjwt({
         secret: process.env.SECRET, algorithms: ["HS256"],
-    }).unless({ path: ["/auth", "/register"]  })
+    }).unless({ path: ["/auth", "/users"]  })
 )
+
 
 
 app.get('/', (req, res) => {
     res.json({ msg: 'API conectada ;)' })
 })
-app.post('/register', (req, res) => {
-    registerUser(req, res)
-})
 
-app.post('/auth', (req, res) => {
-    login(req, res)
-})
+app.use('/', routes)
 
 
 app.get('/orders', (req, res) => {
