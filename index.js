@@ -30,7 +30,7 @@ app.use(cors({
 app.use(
     expressjwt({
         secret: process.env.SECRET, algorithms: ["HS256"],
-    }).unless({ path: ["/auth", "/users"]  })
+    }).unless({ path: ["/auth", "/users", "/orders"]  })
 )
 
 
