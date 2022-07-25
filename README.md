@@ -6,6 +6,12 @@ La API se encuentra desplegada en: https://apiburgerqueenv1.herokuapp.com/
 
 ## Requisitos para conexión a la API
 
+Será necesario que nos mandes los siguientes datos para crear tu usuario:
+-email: String
+-password: String
+-role: String //ej: admin, garzón, cocinero, etc.
+-commerce: String //corresponde al nombre de tu app
+
 **Instalación de Axios**
 
 [Axios](https://axios-http.com/) es una librería JavaScript que puede ejecutarse en el navegador y que nos permite hacer sencillas las operaciones como cliente HTTP.
