@@ -2,8 +2,6 @@
 
 Tecnologías utilizadas: Express, Javascript, JWT, Bcryptjs, Cors, MongoDB.
 
-La API se encuentra desplegada en: https://apiburgerqueenv1.herokuapp.com/
-
 ## Requisitos para conexión a la API
 
 **Instalación de Axios**
@@ -13,48 +11,6 @@ La API se encuentra desplegada en: https://apiburgerqueenv1.herokuapp.com/
 ```node
 npm install axios
 ```
-
-**Repositorio de referencia para hacer la conexión con la API**
-
-En el siguiente [repositorio](https://github.com/daedov/BurgerApi-Front) encuentras un proyecto donde puedes ver la implementación de un login de usuario y su conexión con la API.
-
-**Observador de autenticación para protección de rutas**
-
-Te sugerimos que para iniciar sesión implementes un observador para poder detectar si un usuario está logueado o no y, a su vez, proteger las rutas en las que necesitas delimitar el acceso.
-
-```jsx
-import { Navigate } from "react-router-dom";
-
-const ProtectedRoutes = ({ children }) => {
-  const token = localStorage.getItem("token");
-  console.log(token);
-  if (!token) return <Navigate to="/" />;
-  return <>{children}</>;
-};
-
-export default ProtectedRoutes;
-```
-
-**Verificación del usuario**
-
-Para corroborar si las credenciales del usuario son las correctas, te sugerimos que agregues la siguiente verificación en los componentes que cuenten con rutas protegidas.
-
-```jsx
-useEffect(() => {
-  let headers = {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  };
-  axios
-    .get("https://apiburgerqueenv1.herokuapp.com/", { headers })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}, []);
-```
-
 ## Uso de la API
 
 **Login de usuario**
@@ -80,3 +36,46 @@ axios
   })
   .catch((err) => console.log(err));
 ```
+*Link repositorio de referencia:* https://github.com/daedov/BurgerApi-Front/blob/main/src/components/Login.jsx
+
+**Observador de autenticación para protección de rutas**
+
+Te sugerimos que para iniciar sesión implementes un observador para poder detectar si un usuario está logueado o no y, a su vez, proteger las rutas en las que necesitas delimitar el acceso.
+
+```jsx
+import { Navigate } from "react-router-dom";
+
+const ProtectedRoutes = ({ children }) => {
+  const token = localStorage.getItem("token");
+  console.log(token);
+  if (!token) return <Navigate to="/" />;
+  return <>{children}</>;
+};
+
+export default ProtectedRoutes;
+```
+
+*Link repositorio de referencia*: https://github.com/daedov/BurgerApi-Front/blob/main/src/components/ProtectedRoutes.js
+
+*Para ver la implementación de ProtectedRoutes*: https://github.com/daedov/BurgerApi-Front/blob/main/src/App.js
+
+**Verificación del usuario**
+
+Para corroborar si las credenciales del usuario son las correctas, te sugerimos que agregues la siguiente verificación en los componentes que cuenten con rutas protegidas.
+
+```jsx
+useEffect(() => {
+  let headers = {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  };
+  axios
+    .get("https://apiburgerqueenv1.herokuapp.com/", { headers })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
+```
+*Link repositorio de referencia*: https://github.com/daedov/BurgerApi-Front/blob/main/src/components/Menu.jsx
