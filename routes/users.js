@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { registerUser, getUsersList, getUser } = require('../controllers/users.js')
+const { registerUser, getUsersList, updateUser } = require('../controllers/users.js')
 
 
 router.post('/', (req, res) => { // antiguo '/register'
@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     getUsersList(req, res)
 })
 router.put('/:id', (req, res) => {
-    getUser(req, res)
+    updateUser(req, res)
 })
 
 
