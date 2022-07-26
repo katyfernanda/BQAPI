@@ -45,7 +45,7 @@ const getUsersList = async (req, res) => {
   }
 }
 
-const getUser = async (req, res) => {
+const updateUser = async (req, res) => {
   const token = req.headers.authorization.replace('Bearer ', (''))
   try {
     const decoded = jwt.verify(token, process.env.SECRET);
@@ -75,4 +75,4 @@ const getUser = async (req, res) => {
 
 
 
-module.exports = { registerUser, getUsersList, getUser }
+module.exports = { registerUser, getUsersList, updateUser }
