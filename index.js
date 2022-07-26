@@ -34,8 +34,6 @@ app.use(
     }).unless({ path: ["/auth", "/users", "/orders"]  })
 )
 
-
-
 app.get('/', (req, res) => {
     res.json({ msg: 'API conectada ;)' })
 })
