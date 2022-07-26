@@ -1,19 +1,30 @@
+const jwt = require('jsonwebtoken')
 const Products = require("../models/products");
 
 const getAllProducts = (req, res) => {
-  Products
-    .find()
-    .then((result) => {
-      res.status(200).json({ success: true, message: 'Listado de productos encontrados', result });
-    })
-    .catch((error) => {
-      res.json({ success: false, error })
-    });
+  const token = req.headers.authorization.replace('Bearer ',(''))
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    if(decoded.role.description === 'admin'){
+      Products
+      .find()
+      .then((result) => {
+        res.status(200).json({ success: true, message: 'Operación exitosa', result });
+      })
+      .catch((error) => {
+        res.json({ success: false, error })
+      });
+    }else{
+      res.status(403).json({ success: false, message: 'Solicitud no procesada' })
+    }
+  } catch (error) {
+    return res.status(401).json({ success: false, message: "Sin autorización" })
+  }
 };
 
 const getProductById = (req, res) => {
   Products
-    .findOne({ id: req.params.id})
+    .findOne({ _id: req.params.id})
     .then((result) => {
       res.status(200).json({ success: true, message: 'Se encontró el producto solicitado', result })
     })
