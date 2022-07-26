@@ -16,7 +16,6 @@ const login = (req, res) => {
     .findOne({ email })
     .then((response) => {
         const validatePass = bcrypt.compareSync(password, response.password)
-
         if(validatePass){
             const token = jwt.sign({
                 email: response.email,

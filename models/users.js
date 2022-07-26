@@ -11,9 +11,15 @@ const userSchema = new Schema({
 		type: String,
 		required: true
 	},
-	role: {
-		type: String,
-		required: true
+	role: { 
+		description : {
+		type: String, // admin , admin = true
+		required: true,
+		},
+		admin:  {    
+		type: Boolean,
+		default: false
+		}
 	},
 	commerce: {
 		type: String,
