@@ -3,62 +3,73 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const SALT = bcrypt.genSaltSync(10);
-
+  
 const registerUser = (req, res) => {
-    const data = {
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, SALT),
-        role: req.body.role,
-        commerce: req.body.commerce
-    }
-
-    const user = new Users(data)
-    user
+  const data = {
+    email: req.body.email,
+    password: bcrypt.hashSync(req.body.password, SALT),
+    role: req.body.role,
+    commerce: req.body.commerce
+  }
+  const user = new Users(data)
+  user
     .save()
     .then((response) => {
-        res.status(200).json({success: true, message:'Usuario registrado con éxito'})
+      res.status(200).json({ success: true, message: 'Usuario registrado con éxito' })
 
     })
-    .catch((error) =>{
-        res.status(400).json({success: false, message:'El usuario no se ha podido registrar'})
+    .catch((error) => {
+      res.status(400).json({ success: false, message: 'El usuario no se ha podido registrar' })
     })
 }
-const allUsers = async (req, res) => {
-    const token = req.headers.authorization
-    try {
-        const decoded = jwt.verify(token, process.env.SECRET);
-        console.log(decoded.commerce)
-        if(decoded.role.description === 'admin'){
-        Users
-        .find({commerce: decoded.commerce})
-        .then((result)=> {
-            return res.json({ sucess: true, result })
+
+const getUsersList = async (req, res) => {
+      const token = req.headers.authorization.replace('Bearer ',(''))
+  console.log(token)
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    console.log(decoded)
+    if (decoded.role.description === 'admin') {
+      Users
+        .find({ commerce: decoded.commerce })
+        .then((result) => {
+          return res.status(200).json({ sucess: true, message: "operación exitosa", result })
         })
-        .catch((error)=> {
-            res.json({ success: false, error })
+        .catch((error) => {
+          res.status(500).json({ success: false, message: "Hubo un error al conectarse a la base de datos, intenta nuevamente" })
         })
-    }else{
-        res.json({success: false, message:'tecrei jefe y no te pelay ni una papa'})
+    } else {
+      res.status(403).json({ success: false, message: 'Solo admin puede acceder a estos datos' })
     }
-   
-    } catch (err) {
-        return console.log(err)
+  } catch (err) {
+    return res.status(401).json({ sucess: false, message: "headers authorization no encontradas" })
+  }
+}
+
+const getUser = async (req, res) => {
+  const token = req.headers.authorization.replace('Bearer ',(''))
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    console.log(decoded)
+    if (decoded.role.description === 'admin' || req.params.id === decoded.id) { //|| req.params.id === decoded.._id) {
+      Users
+        .find({ _id: req.params.id })
+        .then((result) => {
+          return res.status(200).json({ sucess: true, message: "operación exitosa", result })
+        })
+        .catch((error) => {
+          res.json({ success: false, message: "Hubo un error al conectarse a la base de datos, intenta nuevamente" })
+        })
+    } else {
+      res.status(403).json({ success: false, message: 'Acceso solo para admin o los datos del mismo usuario acreditado' })
     }
-    
-    // const users = await Users.find() 
-    // .then((response) => {
-    //     console.log(users)
-    //     res.status(200).json({succes: true, message: 'operación exitosa'})
-    // }).catch((error) => {
-    //     console.log(error.message)
-    //     // si no hay cabecera de autenticación {"error": "string"} status 401
-    //     // sii el token no es de una usuaria admin {"error": "string"} status 403
-    // })
-    
-    
-    
+  } catch (err) {
+    return res.status(401).json({ sucess: false, message: "headers authorization no encontradas" })
+  }
+
+  
 }
 
 
 
-module.exports= { registerUser, allUsers}
+module.exports = { registerUser, getUsersList, getUser }

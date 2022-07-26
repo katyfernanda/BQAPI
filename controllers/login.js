@@ -20,12 +20,14 @@ const login = (req, res) => {
             const token = jwt.sign({
                 email: response.email,
                 role: response.role,
-                commerce: response.commerce
+                commerce: response.commerce,
+                id: response._id
             }, SECRET)
             res.status(200).json({success: true, token, data:{
                 email: response.email,
                 role: response.role,
-                commerce: response.commerce
+                commerce: response.commerce,
+                id: response._id
             }})
         }else{
             res.status(401).json({success: false, message:'Contraseña incorrecta'})

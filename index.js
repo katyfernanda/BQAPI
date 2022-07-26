@@ -30,7 +30,7 @@ app.use(cors({
 app.use(
     expressjwt({
         secret: process.env.SECRET, algorithms: ["HS256"],
-    }).unless({ path: ["/auth", "/users", "/orders"]  })
+    }).unless({ path: ["/auth"]  })
 )
 
 
@@ -43,7 +43,7 @@ app.use('/', routes)
 
 
 app.get('/orders', (req, res) => {
-    const token = req.headers.authorization
+    const token = req.headers.authorization.replace('Bearer ',(''))
     try {
         const decoded = jwt.verify(token, process.env.SECRET);
         console.log(decoded)
@@ -51,13 +51,17 @@ app.get('/orders', (req, res) => {
             decoded
         })
     } catch (err) {
-        return console.log(err)
+        return res.json({
+            message: 'papasquema'
+        })
     }
 })
 
 app.use(function (err, req, res, next) {
     if (err.name === "UnauthorizedError") {
+        console.log(err)
       res.status(401).send("Token inválido");
+      
     } else {
       next(err);
     }
