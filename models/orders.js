@@ -13,21 +13,20 @@ const orderSchema = new Schema({
     type: String,
     required: true,
   },
-  products: [{
-      productOrder: {
+  products: [ {
         qty: {
           type: Number,
           required: true,
         },
         product: {
           type: String,
-          required: true
+          required: true,
+          unique: true
         },
         price: {
           type: String,
           required: true
         }
-      },
     },
   ],
 // array [pending, canceled, delivering, delivered]
