@@ -23,11 +23,12 @@ const registerUser = (req, res) => {
 }
 
 const getUsersList = async (req, res) => {
-  const token = req.headers.authorization.replace('Bearer ', (''))
-  console.log("token:",token)
+  console.log("aquiii esta req.auth________________>>>",req)
+   const token = req.headers.authorization.replace('Bearer ', (''))
+   console.log("token:",token)
   try {
-    const decoded = jwt.verify(token, process.env.SECRET);
-    console.log("decoded:",decoded)
+     const decoded = jwt.verify(token, process.env.SECRET);
+     console.log("decoded:",decoded)
     if (decoded.role.description === 'admin') {
       Users
         .find({ commerce: decoded.commerce })

@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const { expressjwt } = require("express-jwt");
 const routes = require("./routes/index");
+// const middlewareUser = require('./middleware/auth')
 
 require("dotenv").config();
 
@@ -26,8 +27,11 @@ app.use(cors({
     origin: '*',
     credentials: true
 }))
+// app.use(middlewareUser())
 const handleAuthenticationMiddleware = (req, res,next) => {
-    console.log("req.auth:",req.auth)
+    console.log("req.auth:URL_______>",req.url)
+    console.log("req.auth:_______>",req)
+//    if(req.auth.role.description === "admin" && (validacion de ruta){haz algo})
     next()
 }
 app.use(
@@ -36,6 +40,18 @@ app.use(
     }).unless({ path: ["/auth"]  }),
     handleAuthenticationMiddleware
 )
+app.use(function (err, req, res, next) {
+    console.log("unuthorized middleware err:", err)
+    if (err.name === "UnauthorizedError") {
+        console.log(err)
+      res.status(401).send("Token inválido");
+      
+    } else {
+      next(err);
+    }
+    next(err)
+  });
+
 
 app.get('/', (req, res) => {
     res.json({ msg: 'API conectada ;)' })
@@ -59,17 +75,9 @@ app.use('/', routes)
 //     }
 // })
 
-app.use(function (err, req, res, next) {
-    console.log("unuthorized middleware err:", err)
-    if (err.name === "UnauthorizedError") {
-        console.log(err)
-      res.status(401).send("Token inválido");
-      
-    } else {
-      next(err);
-    }
-    next(err)
-  });
+
+
+//middlewareUser()
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

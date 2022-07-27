@@ -30,7 +30,8 @@ const createProduct = (req, res)=> {
       name: req.body.name,
       price: req.body.price,
       image: req.body.image,
-      type: req.body.type
+      type: req.body.type,
+      //commerce: nombre del app que esta consumiendo la api
   }
   const product = new Products(data)
   if(!req.body.name || !req.body.price){
