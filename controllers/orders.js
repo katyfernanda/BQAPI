@@ -9,7 +9,8 @@ const productsOrder = (array) => {
     const productOrder = {
       productOrder: {
         qty: element.productOrder.qty,
-        product: element.productOrder.product
+        product: element.productOrder.product,
+        price: element.productOrder.price // debe ser mandado por el front el id del producto
       }
     }
     arrayProducts.push(productOrder)
@@ -18,14 +19,15 @@ const productsOrder = (array) => {
 }
 
 const createOrder = (req, res) => {
-  console.log("req.headers.authorization", req.headers.authorization)
-  const token = req.headers.authorization.replace('Bearer ', (''))
+  console.log("req.headers.authorization::::::::::>>>>>", req.auth)
+  // const token = req.headers.authorization.replace('Bearer ', (''))
+
    try {
-  const decoded = jwt.verify(token, process.env.SECRET);
-  if (decoded.role.description === 'mesero') {
+  // const decoded = jwt.verify(token, process.env.SECRET);
+  if (req.auth.role.description === 'mesero') {
     if (req.body.products.length > 0) {
       const data = {
-        userId: decoded.id,
+        userId: req.auth.id,
         client: req.body.client,
         products: productsOrder(req.body.products)
       }

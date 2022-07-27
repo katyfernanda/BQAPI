@@ -8,7 +8,7 @@ const productSchema = new Schema({
 		unique: true
 	},
 	price: {
-		type: String, //Number o String?
+		type: String, //Number o String? dif? se tratan distintos en la DB?
 		required: true
 	},
 	image: {

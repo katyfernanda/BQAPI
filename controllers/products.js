@@ -30,7 +30,8 @@ const createProduct = (req, res)=> {
       name: req.body.name,
       price: req.body.price,
       image: req.body.image,
-      type: req.body.type
+      type: req.body.type,
+      //commerce: nombre del app que esta consumiendo la api
   }
   if(Object.entries(req.body).length === 0){
     res.status(400).json({ success: false, message: 'Campos no pueden estar vacíos'})
