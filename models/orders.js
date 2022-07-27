@@ -6,11 +6,9 @@ const orderSchema = new Schema({
   
   userId: 
     {
-      type: mongoose.Types.ObjectId,
-      ref: "users",
+      type: Schema.Types.ObjectId, // id: 'oiasiuss88999']
       required: true,
     },
-
   client: {
     type: String,
     required: true,
@@ -22,9 +20,13 @@ const orderSchema = new Schema({
           required: true,
         },
         product: {
-          type: mongoose.Types.ObjectId,
-          ref: "products",
+          type: String,
+          required: true
         },
+        price: {
+          type: String,
+          required: true
+        }
       },
     },
   ],
@@ -45,7 +47,7 @@ const orderSchema = new Schema({
   },
 });
 
-orderSchema.index({ user: 1, client: 1, products: 1, status: 1 });
+orderSchema.index({ userId: 1, client: 1, products: 1, status: 1 });
 
   const Orders = mongoose.model("orders", orderSchema);
 
