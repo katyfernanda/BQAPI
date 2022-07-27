@@ -1,35 +1,27 @@
-const jwt = require('jsonwebtoken')
 const Products = require("../models/products");
 
+//Parameters:
+//_page/int/default 1 = página del listado
+//_limit/int/default 10 = cantidad de productos por página
 const getAllProducts = (req, res) => {
-  const token = req.headers.authorization.replace('Bearer ',(''))
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET);
-    if(decoded.role.description === 'admin'){
-      Products
-      .find()
-      .then((result) => {
-        res.status(200).json({ success: true, message: 'Operación exitosa', result });
-      })
-      .catch((error) => {
-        res.json({ success: false, error })
-      });
-    }else{
-      res.status(403).json({ success: false, message: 'Solicitud no procesada' })
-    }
-  } catch (error) {
-    return res.status(401).json({ success: false, message: "Sin autorización" })
-  }
+  Products
+    .find()
+    .then((result) => {
+      res.status(200).json({ success: true, message: 'Operación exitosa', result });
+    })
+    .catch((error) => {
+      res.json({ success: false, error })
+    });
 };
 
 const getProductById = (req, res) => {
   Products
-    .findOne({ _id: req.params.id})
+    .findOne({ id: req.params.id})
     .then((result) => {
-      res.status(200).json({ success: true, message: 'Se encontró el producto solicitado', result })
+      res.status(200).json({ success: true, message: 'Operación exitosa', result })
     })
     .catch((error) => {
-      res.json({ success: false, error })
+      res.status(404).json({ success: false, message: 'Producto no existe', error })
     });
 };
 
@@ -38,28 +30,30 @@ const createProduct = (req, res)=> {
       name: req.body.name,
       price: req.body.price,
       image: req.body.image,
-      category: req.body.category
+      type: req.body.type
   }
-
   const product = new Products(data)
+  if(!req.body.name || !req.body.price){
+    res.status(400).json({ success: true, message: 'Producto debe tener nombre y precio'})
+  }
   product
       .save()
       .then((result)=> {
-          res.json({ success: true, msg: 'Producto creado', result })
+          res.status(200).json({ success: true, message: 'Producto creado', result })
       })
       .catch((error)=> {
-          res.json({ success: false, msg: 'Error al crear producto', error })
+          res.json({ success: false, message: 'Error al crear producto', error })
       })
 }
 
 const updateProduct = (req, res)=> {
   Products
-      .findOneAndUpdate(
+      .findByIdAndUpdate(
           { id: req.params.id },
           { $set: req.body }
       )
       .then((result)=> {
-          res.json({ success: true, result })
+          res.status(200).json({ success: true, result })
       })
       .catch((error)=> {
           res.json({ success: false, error })
@@ -67,7 +61,7 @@ const updateProduct = (req, res)=> {
 }
 const deleteProduct = (req, res)=> {
   Products
-      .deleteOne({ id: req.params.id})
+      .findByIdAndRemove({ id: req.params.id})
       .then((result)=> {
           res.json({ success: true, result })
       })

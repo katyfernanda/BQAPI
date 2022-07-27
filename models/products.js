@@ -8,16 +8,14 @@ const productSchema = new Schema({
 		unique: true
 	},
 	price: {
-    // documentación dice string
-    // pero debería ser un number?
-		type: String,
+		type: String, //Number o String?
 		required: true
 	},
 	image: {
 		type: String,
     required: false
 	},
-	category: {
+	type: {
 		type: String,
 		required: false
     },
