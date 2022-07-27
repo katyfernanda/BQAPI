@@ -18,7 +18,7 @@ const productSchema = new Schema({
 		type: String,
     required: false
 	},
-	category: {
+	type: {
 		type: String,
 		required: false
     },

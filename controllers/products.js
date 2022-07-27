@@ -27,7 +27,7 @@ const createProduct = (req, res)=> {
       name: req.body.name,
       price: req.body.price,
       image: req.body.image,
-      category: req.body.category
+      type: req.body.type
   }
 
   const product = new Products(data)
