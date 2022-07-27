@@ -23,15 +23,9 @@ const registerUser = (req, res) => {
 }
 
 const getUsersList = async (req, res) => {
-  console.log("aquiii esta req.auth________________>>>",req)
-   const token = req.headers.authorization.replace('Bearer ', (''))
-   console.log("token:",token)
-  try {
-     const decoded = jwt.verify(token, process.env.SECRET);
-     console.log("decoded:",decoded)
-    if (decoded.role.description === 'admin') {
+    if (req.auth.role.description === 'admin') {
       Users
-        .find({ commerce: decoded.commerce })
+        .find({ commerce: req.auth.commerce })
         .then((result) => {
           return res.status(200).json({ sucess: true, message: "operación exitosa", result })
         })
@@ -41,17 +35,10 @@ const getUsersList = async (req, res) => {
     } else {
       res.status(403).json({ success: false, message: 'Solo admin puede acceder a estos datos' })
     }
-  } catch (err) {
-    console.log("catch:", err)
-    return res.status(401).json({ sucess: false, message: "headers authorization no encontradas" })
-  }
 }
 
-const updateUser = async (req, res) => {
-  const token = req.headers.authorization.replace('Bearer ', (''))
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET);
-    if (decoded.role.description === 'admin' || (req.params.id === decoded.id && !req.body.role)) { //|| req.params.id === decoded.._id) {
+const updateUser = async (req, res) => { 
+    if (req.auth.role.admin || (req.params.id === req.auth.id && !req.body.role)) { //|| req.params.id === decoded.._id) {
       Users
         .findByIdAndUpdate(
           { _id: req.params.id },
@@ -70,9 +57,6 @@ const updateUser = async (req, res) => {
     } else {
       res.status(403).json({ success: false, message: 'Acceso solo para admin o los datos del mismo usuario acreditado' })
     }
-  } catch (err) {
-    return res.status(401).json({ sucess: false, message: 'headers authorization no encontradas' })
-  }
 }
 
 
