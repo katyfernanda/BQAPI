@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const { expressjwt } = require("express-jwt");
@@ -22,51 +21,11 @@ mongoose
         console.log(err)
     })
 
-
-app.use(express.json())
-app.use(cors({
-    origin: '*',
-    credentials: true
-}))
-app.use(
-    expressjwt({
-        secret: process.env.SECRET, algorithms: ["HS256"],
-    }).unless({ path: ["/auth"]  })
-)
-
-
-
 app.get('/', (req, res) => {
     res.json({ msg: 'API conectada ;)' })
 })
 
 app.use('/', routes)
-
-
-app.get('/orders', (req, res) => {
-    const token = req.headers.authorization.replace('Bearer ',(''))
-    try {
-        const decoded = jwt.verify(token, process.env.SECRET);
-        console.log(decoded)
-        return res.json({
-            decoded
-        })
-    } catch (err) {
-        return res.json({
-            message: 'papasquema'
-        })
-    }
-})
-
-app.use(function (err, req, res, next) {
-    if (err.name === "UnauthorizedError") {
-        console.log(err)
-      res.status(401).send("Token inválido");
-      
-    } else {
-      next(err);
-    }
-  });
 
 app.use(express.json());
 app.use(
@@ -79,27 +38,8 @@ app.use(
   expressjwt({
     secret: process.env.SECRET,
     algorithms: ["HS256"],
-  }).unless({ path: ["/auth", "/users"] }) //
+  }).unless({ path: ["/auth"] }) //
 );
-
-app.get("/", (req, res) => {
-  res.json({ msg: "API conectada ;)" });
-});
-
-app.use("/", routes);
-
-app.get("/orders", (req, res) => {
-  const token = req.headers.authorization;
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET);
-    console.log(decoded);
-    return res.json({
-      decoded,
-    });
-  } catch (err) {
-    return console.log(err);
-  }
-});
 
 app.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedError") {
