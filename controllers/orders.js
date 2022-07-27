@@ -1,4 +1,5 @@
 
+
 const jwt = require('jsonwebtoken')
 const Orders = require('../models/orders.js')
 
@@ -47,14 +48,15 @@ const createOrder = (req, res) => {
      return res.status(401).json({ sucess: false, message: "headers authorization no encontradas" })
    }
 }
-const getOrders = (req, res ) =>{
-  const token = req.headers.authorization.replace('Bearer ', (''))
-   try {
-  const decoded = jwt.verify(token, process.env.SECRET);
-   } catch (err) {
-    return res.status(401).json({ sucess: false, message: "headers authorization no encontradas" })
-  }
-}
+// const getOrders = (req, res ) =>{
+//  const token = req.headers.authorization.replace('Bearer ', (''))
+//   try {
+ // const decoded = jwt.verify(token, process.env.SECRET);
+ //  } catch (err) {
+ //   return res.status(401).json({ sucess: false, message: "headers authorization no encontradas" })
+//  }
+//}
 
 
 module.exports = { createOrder }
+

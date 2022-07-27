@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+//diferencia entre mongoose.Types.ObjectId y Schema.Types.ObjectId?
 const orderSchema = new Schema({
   
   userId: 
@@ -14,12 +15,11 @@ const orderSchema = new Schema({
     type: String,
     required: true,
   },
-  products: [
-    {
+  products: [{
       productOrder: {
         qty: {
           type: Number,
-          required: true
+          required: true,
         },
         product: {
           type: mongoose.Types.ObjectId,

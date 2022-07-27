@@ -1,10 +1,13 @@
 const Products = require("../models/products");
 
+//Parameters:
+//_page/int/default 1 = página del listado
+//_limit/int/default 10 = cantidad de productos por página
 const getAllProducts = (req, res) => {
   Products
     .find()
     .then((result) => {
-      res.status(200).json({ success: true, message: 'Listado de productos encontrados', result });
+      res.status(200).json({ success: true, message: 'Operación exitosa', result });
     })
     .catch((error) => {
       res.json({ success: false, error })
@@ -15,10 +18,10 @@ const getProductById = (req, res) => {
   Products
     .findOne({ id: req.params.id})
     .then((result) => {
-      res.status(200).json({ success: true, message: 'Se encontró el producto solicitado', result })
+      res.status(200).json({ success: true, message: 'Operación exitosa', result })
     })
     .catch((error) => {
-      res.json({ success: false, error })
+      res.status(404).json({ success: false, message: 'Producto no existe', error })
     });
 };
 
@@ -29,26 +32,28 @@ const createProduct = (req, res)=> {
       image: req.body.image,
       type: req.body.type
   }
-
   const product = new Products(data)
+  if(!req.body.name || !req.body.price){
+    res.status(400).json({ success: true, message: 'Producto debe tener nombre y precio'})
+  }
   product
       .save()
       .then((result)=> {
-          res.json({ success: true, msg: 'Producto creado', result })
+          res.status(200).json({ success: true, message: 'Producto creado', result })
       })
       .catch((error)=> {
-          res.json({ success: false, msg: 'Error al crear producto', error })
+          res.json({ success: false, message: 'Error al crear producto', error })
       })
 }
 
 const updateProduct = (req, res)=> {
   Products
-      .findOneAndUpdate(
+      .findByIdAndUpdate(
           { id: req.params.id },
           { $set: req.body }
       )
       .then((result)=> {
-          res.json({ success: true, result })
+          res.status(200).json({ success: true, result })
       })
       .catch((error)=> {
           res.json({ success: false, error })
@@ -56,7 +61,7 @@ const updateProduct = (req, res)=> {
 }
 const deleteProduct = (req, res)=> {
   Products
-      .deleteOne({ id: req.params.id})
+      .findByIdAndRemove({ id: req.params.id})
       .then((result)=> {
           res.json({ success: true, result })
       })

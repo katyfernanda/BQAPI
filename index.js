@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-// const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const { expressjwt } = require("express-jwt");
@@ -21,7 +20,6 @@ mongoose
     .catch((err) => {
         console.log(err)
     })
-
 
 app.use(express.json())
 app.use(cors({

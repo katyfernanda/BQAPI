@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-//qué hacer con el id de product, se puede autoincrementable? 
 const productSchema = new Schema({
 	name: {
 		type: String,
@@ -9,9 +8,7 @@ const productSchema = new Schema({
 		unique: true
 	},
 	price: {
-    // documentación dice string
-    // pero debería ser un number?
-		type: String,
+		type: String, //Number o String?
 		required: true
 	},
 	image: {
