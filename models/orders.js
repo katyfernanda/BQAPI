@@ -3,13 +3,14 @@ const { Schema } = mongoose;
 
 //diferencia entre mongoose.Types.ObjectId y Schema.Types.ObjectId?
 const orderSchema = new Schema({
-  user: [
+  
+  userId: 
     {
       type: mongoose.Types.ObjectId,
       ref: "users",
       required: true,
     },
-  ],
+
   client: {
     type: String,
     required: true,
@@ -29,9 +30,10 @@ const orderSchema = new Schema({
   ],
 // array [pending, canceled, delivering, delivered]
   status: {
-    type: String,
     required: true,
-    default: 'pending'
+    type: String,
+    default: 'pending',
+    enum: ['pending', 'canceled', 'delivering', 'delivered']
   },
   dataEntry: {
     type: Date,
@@ -40,13 +42,11 @@ const orderSchema = new Schema({
   // fecha cambia cuando status cambia a delivered?
   dataProcessed: {
     type: Date,
-    default: Date.now,
-    required: false,
   },
 });
 
-orderSchema.index({ user: 1, client: 1, products: 1, status: 1});
+orderSchema.index({ user: 1, client: 1, products: 1, status: 1 });
 
-const Orders = mongoose.model("orders", orderSchema);
+  const Orders = mongoose.model("orders", orderSchema);
 
-module.exports = Orders;
+  module.exports = Orders;

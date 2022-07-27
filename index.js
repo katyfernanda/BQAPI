@@ -21,33 +21,55 @@ mongoose
         console.log(err)
     })
 
+app.use(express.json())
+app.use(cors({
+    origin: '*',
+    credentials: true
+}))
+const handleAuthenticationMiddleware = (req, res,next) => {
+    console.log("req.auth:",req.auth)
+    next()
+}
+app.use(
+    expressjwt({
+        secret: process.env.SECRET, algorithms: ["HS256"],
+    }).unless({ path: ["/auth"]  }),
+    handleAuthenticationMiddleware
+)
+
 app.get('/', (req, res) => {
     res.json({ msg: 'API conectada ;)' })
 })
 
 app.use('/', routes)
 
-app.use(express.json());
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
-app.use(
-  expressjwt({
-    secret: process.env.SECRET,
-    algorithms: ["HS256"],
-  }).unless({ path: ["/auth"] }) //
-);
+
+// app.get('/orders', (req, res) => {
+//     const token = req.headers.authorization.replace('Bearer ',(''))
+//     try {
+//         const decoded = jwt.verify(token, process.env.SECRET);
+//         console.log(decoded)
+//         return res.json({
+//             decoded
+//         })
+//     } catch (err) {
+//         return res.json({
+//             message: 'papasquema'
+//         })
+//     }
+// })
 
 app.use(function (err, req, res, next) {
-  if (err.name === "UnauthorizedError") {
-    res.status(401).send("Token inválido");
-  } else {
-    next(err);
-  }
-});
+    console.log("unuthorized middleware err:", err)
+    if (err.name === "UnauthorizedError") {
+        console.log(err)
+      res.status(401).send("Token inválido");
+      
+    } else {
+      next(err);
+    }
+    next(err)
+  });
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

@@ -1,16 +1,16 @@
-// const express = require('express')
-// const router = express.Router()
-// const jwt = require('jsonwebtoken')
+const express = require('express')
+const router = express.Router()
+const {createOrder  } = require('../controllers/orders.js')
 
-// app.get('/orders', (req, res) => {
-//     const token = req.headers.authorization
-//     try {
-//         const decoded = jwt.verify(token, process.env.SECRET);
-//         console.log(decoded)
-//         return res.json({
-//             decoded
-//         })
-//     } catch (err) {
-//         return console.log(err)
-//     }
-// })
+
+router.post('/', (req, res) => { 
+    createOrder(req, res)
+})
+router.get('/', (req, res) => {   
+})
+router.put('/:id', (req, res) => {  
+})
+
+
+
+module.exports = router
