@@ -32,10 +32,10 @@ const createProduct = (req, res)=> {
       image: req.body.image,
       type: req.body.type
   }
-  const product = new Products(data)
-  if(!req.body.name || !req.body.price){
-    res.status(400).json({ success: true, message: 'Producto debe tener nombre y precio'})
+  if(Object.entries(req.body).length === 0){
+    res.status(400).json({ success: false, message: 'Campos no pueden estar vacíos'})
   }
+  const product = new Products(data)
   product
       .save()
       .then((result)=> {
