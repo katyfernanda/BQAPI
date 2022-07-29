@@ -1,27 +1,11 @@
 
 
 const jwt = require('jsonwebtoken')
-const Orders = require('../models/orders.js')
+const Order = require('../models/orders.js')
 const status = ['pending', 'canceled', 'delivering', 'delivered']
 
-// const productsOrder = (array) => {
-//   let arrayProducts = []
-//   console.log("array __________________>>",array)
-//   array.forEach((element) => {
-//     const productOrder = {
-//       productOrder: {
-//         qty: element.qty,
-//         product: element.product,
-//         price: element.price // debe ser mandado por el front el id del producto
-//       }
-//     }
-//     arrayProducts.push(productOrder)
-//   })
-//   return arrayProducts
-// }
 
 const createOrder = (req, res) => {
-  console.log("req.headers.authorization::::::::::>>>>>", req.auth)
   if (req.auth.role.description === 'mesero') {
     if (req.body.products.length > 0) {
       const data = {
@@ -29,11 +13,11 @@ const createOrder = (req, res) => {
         client: req.body.client,
         products: req.body.products
       }
-      const orders = new Orders(data)
+      const orders = new Order(data)
       orders
         .save()
         .then((response) => {
-          return res.status(200).json({ success: true, message: 'Orden registrada con éxito' })
+          return res.status(200).json({ success: true, message: 'Orden registrada con éxito', response })
         })
         .catch((error) => {
           return res.status(400).json({ success: false, message: 'Orden no registrada' })
@@ -46,8 +30,7 @@ const createOrder = (req, res) => {
   }
 }
 const getOrders = (req, res) => {
-  console.log(req.auth)
-  Orders
+  Order
     .find({ commerce: req.auth.commerce })
     .then((result) => {
       return res.status(200).json({ sucess: true, message: "operación exitosa", result })
@@ -58,8 +41,9 @@ const getOrders = (req, res) => {
 }
 
 const getOrderById = (req, res) => {
-  Orders
+  Order
     .findById({ _id: req.params.id })
+
     .then((result) => {
       return res.status(200).json({ sucess: true, message: "operación exitosa", result })
     })
@@ -68,70 +52,84 @@ const getOrderById = (req, res) => {
     })
 }
 
-const updateOrder = (req, res) => {
-  console.log(req.body.status)
+const updateStatusOrder = (req, res) => {
   if (status.includes(req.body.status)) {
-    Orders
+    Order
       .findByIdAndUpdate(
         { _id: req.params.id },
-        { $set: req.body }
+        {
+          $set: {
+            status: req.body.status
+          }
+        }
       )
       .then((response) => {
-        return res.status(200).json({ sucess: true, message: "Estado cambiado", response })
+        res.status(200).json({ sucess: true, message: "Estado cambiado", response })
       })
       .catch((err) => {
-        return res.status(404).json({ sucess: true, message: "La orden no existe" })
+        res.status(404).json({ sucess: false, message: "La orden no existe" })
       })
   } else {
-    return res.status(400).json({ sucess: true, message: "Estado no válido" })
+    return res.status(400).json({ sucess: false, message: "Estado no válido" })
   }
-  if(req.body.products){
-    
-  }
-  // Orders
-  //   .findOne(
-  //     { _id: req.params.id },
-  //     // { $set: req.body }
-  //   )
-
-
-
-
-
-
 }
-//
-// const products = [
-//    {
-//   "qty": "1",
-//   "product":"pure",
-//   "price": "2.000"
-//   },
-//    {
-//   "qty": "1",
-//   "product":"papas fritas gourmet",
-//   "price": "2.000"
-//   }
-//   }
-// ]
-//   if (req.auth.role.admin || (req.params.id === req.auth.id && !req.body.role)) { //|| req.params.id === decoded.._id) {
-//     Users
-//       .findByIdAndUpdate(
-//         { _id: req.params.id },
-//         { $set: req.body }
-//       )
-//       .then((result) => {
-//         Users
-//           .findOne({ _id: req.params.id })
-//           .then((result) => {
-//             return res.status(200).json({ sucess: true, message: 'operación exitosa has editado', result })
-//           })
-//       })
-//       .catch((error) => {
-//         res.json({ success: false, message: 'Hubo un error al conectarse a la base de datos, intenta nuevamente' })
-//       })
-//  
-// }
 
-module.exports = { createOrder, getOrders, getOrderById, updateOrder }
+const updateProductsOrder = async (req, res) => {
+  const productsArray = req.body.products //[{product},{}]
+  let order
+  try {
+    order = await Order.findById({ _id: req.params.id })
+  } catch {
+    (error)
+    res.status(500).json({ success: false, message: "Hubo un error al conectarse a la base de datos, intenta nuevamente" })
+  }
+  productsArray.forEach((element) => { //[{ product: 'papas duquesas gourmet', qty: '90' },{ product: 'smoothie de papas', qty: '5' }]
+    const index = order.products.findIndex((el) => {
+      return el.product === element.product
+    })
+    if (index != -1) {
+      order.products[index].qty = element.qty
+    } else {
+      order.products.push(element)
+    }
+  });
+  console.log(order)
+  Order
+    .findByIdAndUpdate(
+      { _id: req.params.id },
+      { $set: order },
+      { new: true }
+    )
+    .then((result) => {
+      return res.status(200).json({ succes: true, message: "Listoco", result })
+    })
+    .catch((err) => {
+      return res.status(418).json({ succes: false, message: "poio", err })
+    })
+}
+const deleteOrder = (req, res) => {
+  console.log(req.auth.role)
+  if (req.auth.role === 'admin') {
+    Order
+      .findOneAndDelete(
+        { _id: req.params.id }
+      )
+      .then((result) => {
+        return res.status(200).json({ succes: true, message: "Borraste el documento"})
+      })
+      .catch((err) => {
+        return res.status(404).json({ succes: false, message: "Documento no encontrado"})
+      })
+  } else {
+    return res.status(403).json({ succes: false, message: "Acceso denegado" })
+  }
+}
+
+
+
+
+
+
+
+module.exports = { createOrder, getOrders, getOrderById, updateStatusOrder, updateProductsOrder, deleteOrder }
 

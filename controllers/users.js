@@ -42,14 +42,11 @@ const updateUser = async (req, res) => {
       Users
         .findByIdAndUpdate(
           { _id: req.params.id },
-          { $set: req.body }
+          { $set: req.body },
+          {new: true}
         )
-        .then((result) => {
-          Users
-            .findOne({ _id: req.params.id })
-            .then((result) => {
-              return res.status(200).json({ sucess: true, message: 'operación exitosa has editado', result })
-            })
+        .then((result) => {  
+              return res.status(200).json({ sucess: true, message: 'operación exitosa has editado', result })   
         })
         .catch((error) => {
           res.json({ success: false, message: 'Hubo un error al conectarse a la base de datos, intenta nuevamente' })
