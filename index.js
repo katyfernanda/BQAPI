@@ -29,8 +29,8 @@ app.use(cors({
 }))
 // app.use(middlewareUser())
 const handleAuthenticationMiddleware = (req, res,next) => {
-    console.log("req.auth:URL_______>",req.url)
-    console.log("req.auth:_______>",req)
+    // console.log("req.auth:URL_______>",req.url)
+    // console.log("req.auth:_______>",req)
 //    if(req.auth.role.description === "admin" && (validacion de ruta){haz algo})
     next()
 }
