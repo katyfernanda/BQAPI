@@ -94,47 +94,47 @@ Para el manejo de ordenes, te recomendamos seguir la estructura propuesta en el 
 
 Para obtener una orden necesitas indicar el id de la orden que quieres revisar.
 ```
-_Método HTTP_: `GET`
+Método HTTP: GET
 
-_Ruta requerida: `https://apiburgerqueenv1.herokuapp.com/orders/:id`_
+Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/:id
 ```
 
 **Obtener todas las ordenes**
 ```
-_Método HTTP_: `GET`
+Método HTTP: GET
 
-_Ruta requerida: `https://apiburgerqueenv1.herokuapp.com/orders`_
+Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders
 ```
 
 **Agregar una orden**
 
 Para agregar una orden necesitas ingresar el nombre del cliente, nombre del producto (product) y la cantidad (qty). Por default el estado de la orden es _"pending"_
 ```
-_Método HTTP_: `POST`
+Método HTTP: POST
 
-_Ruta requerida: `https://apiburgerqueenv1.herokuapp.com/orders`_
+Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders
 ```
 **Editar una orden**
 
 Para editar la orden necesitas indicar el nombre del producto; solo puedes editar la cantidad (qty).
 ```
-_Método HTTP_: `PUT`
+Método HTTP: PUT
 
-_Ruta requerida: `https://apiburgerqueenv1.herokuapp.com/orders/:id`_
+Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/:id
 ```
 **Modificar el estado de una orden**
 
 Los estados de la orden son _pending, delivering, delivered y canceled_. Debes indicar el id de la orden para poder editar el estado. 
 ```
-_Método HTTP_: `PUT`
+Método HTTP: PUT
 
-_Ruta requerida: `https://apiburgerqueenv1.herokuapp.com/orders/status/:id`_
+Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/status/:id
 ```
 **Eliminar una orden**
 
 Para eliminar la orden necesitas ingresar el id de la orden y solo puede ser realizada por el administrador. 
 ```
-_Método HTTP_: `DELETE`
+Método HTTP: DELETE
 
-_Ruta requerida: `https://apiburgerqueenv1.herokuapp.com/orders/:id`_
+Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/:id
 ```
