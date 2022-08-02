@@ -25,8 +25,8 @@ const orderSchema = new Schema({
         },
         price: {
           type: String,
-          required: true
-        }
+          required: false
+        },
     },
   ],
 // array [pending, canceled, delivering, delivered]

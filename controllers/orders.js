@@ -23,17 +23,17 @@ const createOrder = (req, res) => {
           return res.status(400).json({ success: false, message: 'Orden no registrada' })
         })
     } else {
-      return res.status(401).json({ sucess: false, message: "Para crear una orden debes agregar productos" })
+      return res.status(401).json({ success: false, message: "Para crear una orden debes agregar productos" })
     }
   } else {
-    return res.status(401).json({ sucess: false, message: "No tienes permiso para crear ordenes, acercate a un mesero" })
+    return res.status(401).json({ success: false, message: "No tienes permiso para crear ordenes, acercate a un mesero" })
   }
 }
 const getOrders = (req, res) => {
   Order
     .find({ commerce: req.auth.commerce })
     .then((result) => {
-      return res.status(200).json({ sucess: true, message: "operación exitosa", result })
+      return res.status(200).json({ success: true, message: "operación exitosa", result })
     })
     .catch((error) => {
       res.status(500).json({ success: false, message: "Hubo un error al conectarse a la base de datos, intenta nuevamente" })
@@ -45,7 +45,7 @@ const getOrderById = (req, res) => {
     .findById({ _id: req.params.id })
 
     .then((result) => {
-      return res.status(200).json({ sucess: true, message: "operación exitosa", result })
+      return res.status(200).json({ success: true, message: "operación exitosa", result })
     })
     .catch((error) => {
       res.status(500).json({ success: false, message: "Hubo un error al conectarse a la base de datos, intenta nuevamente" })
@@ -64,13 +64,13 @@ const updateStatusOrder = (req, res) => {
         }
       )
       .then((response) => {
-        res.status(200).json({ sucess: true, message: "Estado cambiado", response })
+        res.status(200).json({ success: true, message: "Estado cambiado", response })
       })
       .catch((err) => {
-        res.status(404).json({ sucess: false, message: "La orden no existe" })
+        res.status(404).json({ success: false, message: "La orden no existe" })
       })
   } else {
-    return res.status(400).json({ sucess: false, message: "Estado no válido" })
+    return res.status(400).json({ success: false, message: "Estado no válido" })
   }
 }
 
@@ -101,10 +101,10 @@ const updateProductsOrder = async (req, res) => {
       { new: true }
     )
     .then((result) => {
-      return res.status(200).json({ succes: true, message: "Listoco", result })
+      return res.status(200).json({ success: true, message: "Operación exitosa", result })
     })
     .catch((err) => {
-      return res.status(418).json({ succes: false, message: "poio", err })
+      return res.status(418).json({ success: false, message: "No existe la orden", err })
     })
 }
 const deleteOrder = (req, res) => {
@@ -115,13 +115,13 @@ const deleteOrder = (req, res) => {
         { _id: req.params.id }
       )
       .then((result) => {
-        return res.status(200).json({ succes: true, message: "Borraste el documento"})
+        return res.status(200).json({ success: true, message: "Borraste el documento"})
       })
       .catch((err) => {
-        return res.status(404).json({ succes: false, message: "Documento no encontrado"})
+        return res.status(404).json({ success: false, message: "Documento no encontrado"})
       })
   } else {
-    return res.status(403).json({ succes: false, message: "Acceso denegado" })
+    return res.status(403).json({ success: false, message: "Acceso denegado" })
   }
 }
 
