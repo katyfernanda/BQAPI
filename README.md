@@ -173,7 +173,7 @@ Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/products/:id
 {
 "products": [
     {
-    "qty": 4,
+    "qty": 6,
     "product": "cafe expresso"
     }               
  ]
@@ -182,6 +182,28 @@ Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/products/:id
 
 *Ejemplo de respuesta*
 
+```json
+{
+    "success": true,
+    "message": "Operación exitosa",
+    "result": {
+        "_id": "62e942fc6a890a8f3328fbf4",
+        "userId": "62df080a645a2950a2bd7a61",
+        "client": "Lizz",
+        "products": [
+            {
+                "qty": 6,
+                "product": "cafe expresso",
+                "price": "3500",
+                "_id": "62e942fc6a890a8f3328fbf5"
+            }
+        ],
+        "status": "pending",
+        "dataEntry": "2022-08-02T15:30:04.130Z",
+        "__v": 0
+    }
+}
+```
 
 **Modificar el estado de una orden**
 
@@ -191,6 +213,23 @@ Los estados de la orden son _pending, delivering, delivered y canceled_. Debes i
 Método HTTP: PUT
 
 Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/status/:id
+```
+
+*Ejemplo de datos necesarios*
+
+```json
+{
+"status": "delivering"
+}
+```
+
+*Ejemplo de respuesta*
+
+```json
+{
+    "success": true,
+    "message": "Estado cambiado",
+}
 ```
 
 **Eliminar una orden**
