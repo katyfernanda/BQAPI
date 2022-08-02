@@ -88,11 +88,12 @@ useEffect(() => {
 
 ### Manejo de Ordenes / Pedidos
 
-Para el manejo de ordenes, te recomendamos seguir la estructura propuesta en el login de usuario. También debes usar axios para el manejo de peticiones.
+Para el manejo de ordenes, te recomendamos seguir la estructura propuesta en el login de usuario. También podrías usar axios para el manejo de peticiones.
 
 **Obtener una orden**
 
 Para obtener una orden necesitas indicar el id de la orden que quieres revisar.
+
 ```
 Método HTTP: GET
 
@@ -108,31 +109,94 @@ Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders
 
 **Agregar una orden**
 
-Para agregar una orden necesitas ingresar el nombre del cliente, nombre del producto (product) y la cantidad (qty). Por default el estado de la orden es _"pending"_
+Para agregar una orden necesitas ingresar el nombre del cliente (client), la cantidad (qty), nombre del producto (product) y el precio (price) Por default el estado de la orden es _"pending"_
+
 ```
+
 Método HTTP: POST
 
 Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders
 ```
+
+*Ejemplo de datos necesarios*
+
+```json
+{
+"client": "Lizz",
+"products": [
+    {
+    "qty": 1,
+    "product": "cafe expresso",
+    "price": "3500"
+    }               
+ ]
+}
+```
+*Ejemplo de respuesta*
+
+```json
+{
+    "success": true,
+    "message": "Orden registrada con éxito",
+    "response": {
+        "userId": "62df080a645a2950a2bd7a61",
+        "client": "Lizz",
+        "products": [
+            {
+                "qty": 1,
+                "product": "cafe expresso",
+                "price": "3500",
+                "_id": "62e942fc6a890a8f3328fbf5"
+            }
+        ],
+        "status": "pending",
+        "_id": "62e942fc6a890a8f3328fbf4",
+        "dataEntry": "2022-08-02T15:30:04.130Z",
+        "__v": 0
+    }
+}
+```
+
 **Editar una orden**
 
-Para editar la orden necesitas indicar el nombre del producto; solo puedes editar la cantidad (qty).
+Para editar la orden necesitas indicar el nombre del producto y solo puedes editar la cantidad (qty).
+
 ```
 Método HTTP: PUT
 
-Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/:id
+Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/products/:id
 ```
+
+*Ejemplo de datos necesarios*
+
+```json
+{
+"products": [
+    {
+    "qty": 4,
+    "product": "cafe expresso"
+    }               
+ ]
+}
+```
+
+*Ejemplo de respuesta*
+
+
 **Modificar el estado de una orden**
 
-Los estados de la orden son _pending, delivering, delivered y canceled_. Debes indicar el id de la orden para poder editar el estado. 
+Los estados de la orden son _pending, delivering, delivered y canceled_. Debes indicar el id de la orden para poder editar el estado.
+
 ```
 Método HTTP: PUT
 
 Ruta requerida: https://apiburgerqueenv1.herokuapp.com/orders/status/:id
 ```
+
 **Eliminar una orden**
 
-Para eliminar la orden necesitas ingresar el id de la orden y solo puede ser realizada por el administrador. 
+Para eliminar la orden necesitas ingresar el id de la orden y solo puede ser realizada por el administrador.
+
 ```
 Método HTTP: DELETE
 
