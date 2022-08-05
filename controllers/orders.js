@@ -4,14 +4,14 @@ const jwt = require('jsonwebtoken')
 const Order = require('../models/orders.js')
 const status = ['pending', 'canceled', 'delivering', 'delivered']
 
-
 const createOrder = (req, res) => {
   if (req.auth.role.description === 'mesero') {
     if (req.body.products.length > 0) {
       const data = {
         userId: req.auth.id,
         client: req.body.client,
-        products: req.body.products
+        products: req.body.products,
+        commerce: req.auth.commerce
       }
       const orders = new Order(data)
       orders
@@ -124,12 +124,6 @@ const deleteOrder = (req, res) => {
     return res.status(403).json({ success: false, message: "Acceso denegado" })
   }
 }
-
-
-
-
-
-
 
 module.exports = { createOrder, getOrders, getOrderById, updateStatusOrder, updateProductsOrder, deleteOrder }
 
