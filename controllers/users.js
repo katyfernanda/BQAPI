@@ -18,7 +18,7 @@ const registerUser = (req, res) => {
       res.status(200).json({ success: true, message: 'Usuario registrado con éxito' })
     })
     .catch((error) => {
-      res.status(400).json({ success: false, message: 'El usuario no se ha podido registrar' })
+      res.status(400).json({ success: false, message: 'El usuario no se ha podido registrar', error })
     })
 }
 

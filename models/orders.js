@@ -13,6 +13,11 @@ const orderSchema = new Schema({
     type: String,
     required: true,
   },
+  table:{
+    type: String,
+    required: false
+    
+  },
   products: [ {
         qty: {
           type: Number,
@@ -44,6 +49,10 @@ const orderSchema = new Schema({
   dataProcessed: {
     type: Date,
   },
+  commerce: {
+    type: String,
+    required: true
+  }
 });
 
 orderSchema.index({ userId: 1, client: 1, products: 1, status: 1 });
