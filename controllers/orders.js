@@ -13,6 +13,7 @@ const createOrder = (req, res) => {
         products: req.body.products,
         commerce: req.auth.commerce
       }
+      console.log("data-------------------->",data)
       const orders = new Order(data)
       orders
         .save()
@@ -43,7 +44,6 @@ const getOrders = (req, res) => {
 const getOrderById = (req, res) => {
   Order
     .findById({ _id: req.params.id })
-
     .then((result) => {
       return res.status(200).json({ success: true, message: "operación exitosa", result })
     })
