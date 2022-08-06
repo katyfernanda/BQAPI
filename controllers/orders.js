@@ -11,9 +11,9 @@ const createOrder = (req, res) => {
         userId: req.auth.id,
         client: req.body.client,
         products: req.body.products,
-        commerce: req.auth.commerce
+        commerce: req.auth.commerce,
+        table: req.body.table
       }
-      console.log("data-------------------->",data)
       const orders = new Order(data)
       orders
         .save()
