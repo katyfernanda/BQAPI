@@ -6,7 +6,6 @@ const orderSchema = new Schema({
   userId: 
     {
       type: Schema.Types.ObjectId, // id: 'oiasiuss88999']
-      ref:"Users",
       required: true,
     },
   client: {
@@ -25,7 +24,8 @@ const orderSchema = new Schema({
         product: {
           type: String,
           required: true,
-          unique: false
+          unique: false,
+          parse: true
         },
         price: {
           type: String,
