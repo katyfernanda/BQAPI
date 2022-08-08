@@ -24,6 +24,7 @@ const orderSchema = new Schema({
         product: {
           type: String,
           required: true,
+          unique: false
         },
         price: {
           type: String,
@@ -52,6 +53,6 @@ const orderSchema = new Schema({
   }
 });
 
-// orderSchema.index({ commerce: 1, client: 1, products: 1, status: 1 });
+  orderSchema.index({ commerce: 1, client: 1, products: 1, status: 1 });
   const Orders = mongoose.model("orders", orderSchema);
   module.exports = Orders;
