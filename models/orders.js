@@ -25,7 +25,7 @@ const orderSchema = new Schema({
           type: String,
           required: true,
           unique: false,
-          parse: true
+          sparse: true
         },
         price: {
           type: String,
