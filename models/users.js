@@ -31,7 +31,7 @@ const userSchema = new Schema({
 	}
 })
 
-userSchema.index({ email: 1, commerce: 1, role: 1  })
+// userSchema.index({ email: 1, commerce: 1, role: 1  })
 
 const Users = mongoose.model('users', userSchema)
 
