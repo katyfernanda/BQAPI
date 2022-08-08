@@ -15,6 +15,7 @@ const createOrder = (req, res) => {
         table: req.body.table
       }
       const orders = new Order(data)
+      console.log(data)
       orders
         .save()
         .then((response) => {
