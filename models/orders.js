@@ -3,7 +3,6 @@ const { Schema } = mongoose;
 
 //diferencia entre mongoose.Types.ObjectId y Schema.Types.ObjectId?
 const orderSchema = new Schema({
-  
   userId: 
     {
       type: Schema.Types.ObjectId, // id: 'oiasiuss88999']
@@ -53,6 +52,6 @@ const orderSchema = new Schema({
   }
 });
 
-orderSchema.index({ userId: 1, client: 1, products: 1, status: 1 });
+// orderSchema.index({ commerce: 1, client: 1, products: 1, status: 1 });
   const Orders = mongoose.model("orders", orderSchema);
   module.exports = Orders;
