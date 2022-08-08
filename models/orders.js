@@ -25,7 +25,6 @@ const orderSchema = new Schema({
         product: {
           type: String,
           required: true,
-          unique: true
         },
         price: {
           type: String,
