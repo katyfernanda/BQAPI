@@ -21,7 +21,7 @@ const createOrder = (req, res) => {
           return res.status(200).json({ success: true, message: 'Orden registrada con éxito', response })
         })
         .catch((error) => {
-          return res.status(400).json({ success: false, message: 'Orden no registrada' })
+          return res.status(400).json({ success: false, message: 'Orden no registrada', error })
         })
     } else {
       return res.status(401).json({ success: false, message: "Para crear una orden debes agregar productos" })
