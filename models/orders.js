@@ -6,6 +6,7 @@ const orderSchema = new Schema({
   userId: 
     {
       type: Schema.Types.ObjectId, // id: 'oiasiuss88999']
+      ref:"Users",
       required: true,
     },
   client: {
