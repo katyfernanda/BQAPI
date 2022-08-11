@@ -110,7 +110,7 @@ const updateProductsOrder = async (req, res) => {
 }
 const deleteOrder = (req, res) => {
   console.log(req.auth.role)
-  if (req.auth.role === 'admin') {
+  if (req.auth.role.description === 'admin') {
     Order
       .findOneAndDelete(
         { _id: req.params.id }
