@@ -9,14 +9,19 @@ const routes = require("./routes/index");
 require("dotenv").config();
 
 const URL =
-  process.env.NODE_ENV === "development"
-    ? process.env.DB_DEV
-    : process.env.DB_PROD;
+  process.env.NODE_ENV === "development" ? process.env.DB_DEV 
+  :
+  process.env.NODE_ENV === "test" ? process.env.DB_TEST
+  : 
+  process.env.DB_PROD;
 mongoose
     .connect(URL)
     .then(() => {
-        const message = process.env.NODE_ENV === 'development' ? 'Conectado a DB_DEV' : 'Conectado a DB_PROD'
-        console.log(message)
+        const message = process.env.NODE_ENV === 'development' ? 'Conectado a DB_DEV' 
+        :
+        process.env.NODE_ENV === 'test' ? 'Conectado a DB_TEST'
+        :
+        'Conectado a DB_PROD'
     })
     .catch((err) => {
         console.log(err)
@@ -28,17 +33,17 @@ app.use(cors({
     credentials: true
 }))
 // app.use(middlewareUser())
-const handleAuthenticationMiddleware = (req, res,next) => {
-    // console.log("req.auth:URL_______>",req.url)
-    // console.log("req.auth:_______>",req)
-//    if(req.auth.role.description === "admin" && (validacion de ruta){haz algo})
-    next()
-}
+// const handleAuthenticationMiddleware = (req, res,next) => {
+//     console.log("req.auth:URL_______>",req.url)
+//     console.log("req.auth:_______>",req)
+  //  if(req.auth.role.description === "admin" )
+//     next()
+// }
 app.use(
     expressjwt({
         secret: process.env.SECRET, algorithms: ["HS256"],
     }).unless({ path: ["/auth"]  }),
-    handleAuthenticationMiddleware
+    // handleAuthenticationMiddleware()
 )
 app.use(function (err, req, res, next) {
     console.log("unuthorized middleware err:", err)
@@ -47,39 +52,24 @@ app.use(function (err, req, res, next) {
       res.status(401).send("Token inválido");
       
     } else {
+      console.log('--->error.name',err.name)
       next(err);
     }
-    next(err)
+    next('------->',err)
   });
 
 
 app.get('/', (req, res) => {
     res.json({ msg: 'API conectada ;)' })
 })
-
 app.use('/', routes)
-
-
-// app.get('/orders', (req, res) => {
-//     const token = req.headers.authorization.replace('Bearer ',(''))
-//     try {
-//         const decoded = jwt.verify(token, process.env.SECRET);
-//         console.log(decoded)
-//         return res.json({
-//             decoded
-//         })
-//     } catch (err) {
-//         return res.json({
-//             message: 'papasquema'
-//         })
-//     }
-// })
-
 
 
 //middlewareUser()
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = { app, server}
